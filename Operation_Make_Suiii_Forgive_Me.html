@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation: Make Suiii Forgive Me 💗</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#ffd6e7,#e9d8ff);
+  display:flex; align-items:center; justify-content:center; color:#4b2940;
+  overflow:hidden;
+}
+.card{
+  width:min(92vw,520px); min-height:620px; padding:32px 24px;
+  background:rgba(255,255,255,.9); border-radius:30px;
+  box-shadow:0 20px 60px rgba(90,45,80,.2); text-align:center;
+  position:relative; overflow:hidden;
+}
+h1{font-size:30px;margin:8px 0 12px}
+h2{font-size:25px;margin:8px 0 14px}
+p{font-size:17px;line-height:1.55}
+.emoji{font-size:72px;margin:10px}
+button{
+  border:0;border-radius:999px;padding:14px 22px;margin:8px;
+  font-size:16px;font-weight:bold;cursor:pointer;
+  background:#ff6f9f;color:white;box-shadow:0 7px 16px rgba(255,111,159,.3);
+}
+button.secondary{background:#eee;color:#654}
+button:hover{transform:scale(1.04)}
+.screen{display:none;animation:fade .35s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hearts{font-size:34px;letter-spacing:8px;margin:20px}
+.progress{height:8px;background:#f0dce7;border-radius:10px;margin:0 0 25px;overflow:hidden}
+.bar{height:100%;background:#ff6f9f;width:20%;transition:.4s}
+#gameArea{height:230px;position:relative;background:#fff5fa;border-radius:20px;margin:15px 0}
+.heart{position:absolute;font-size:36px;cursor:pointer;user-select:none}
+.reason{font-size:21px;font-weight:bold;background:#fff0f6;border-radius:18px;padding:22px;margin:20px 0}
+.final{font-size:22px;font-weight:bold}
+.small{font-size:13px;opacity:.65}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="progress"><div class="bar" id="bar"></div></div>
+
+  <section class="screen active" id="s1">
+    <div class="emoji">🥺</div>
+    <h1>Operation: Make Suiii Forgive Me 💗</h1>
+    <p>Welcome, <b>Suiii</b>.</p>
+    <p>You have been selected for a very important mission.</p>
+    <p><b>Mission objective:</b> stop being upset with your girlfriend. 😌</p>
+    <button onclick="go(2)">BEGIN MISSION 🚀</button>
+  </section>
+
+  <section class="screen" id="s2">
+    <div class="emoji">❤️</div>
+    <h2>LEVEL 1: Find My Heart</h2>
+    <p>It's somewhere in here. Catch it. 👀</p>
+    <div id="gameArea"></div>
+    <p id="count">Hearts caught: 0 / 3</p>
+  </section>
+
+  <section class="screen" id="s3">
+    <div class="emoji">💌</div>
+    <h2>LEVEL 2: Things I Love About You</h2>
+    <p>Tap the button to unlock them.</p>
+    <div class="reason" id="reason">There are definitely more than one. ❤️</div>
+    <button onclick="nextReason()">UNLOCK ANOTHER</button>
+    <button class="secondary" onclick="go(4)">I'M READY 😌</button>
+  </section>
+
+  <section class="screen" id="s4">
+    <div class="emoji">😏</div>
+    <h2>LEVEL 3: Survive My Flirting</h2>
+    <p>Choose wisely, Suiii.</p>
+    <p><b>What happens when I see you?</b></p>
+    <button onclick="flirt('correct')">I forget how to behave 😳</button>
+    <button class="secondary" onclick="flirt('wrong')">I remain completely normal</button>
+    <p id="flirtResult"></p>
+  </section>
+
+  <section class="screen" id="s5">
+    <div class="emoji">🫂</div>
+    <h2>FINAL LEVEL</h2>
+    <p>Come collect your girlfriend.</p>
+    <p>Unfortunately, she's currently several kilometres away.</p>
+    <p>So for now, here's a:</p>
+    <div class="reason">VERY LARGE VIRTUAL HUG 🫂💗</div>
+    <button onclick="go(6)">COLLECT GIRLFRIEND 🥹</button>
+  </section>
+
+  <section class="screen" id="s6">
+    <div class="emoji">🏆</div>
+    <h1>YOU WIN, SUIII! 🎉</h1>
+    <p class="final">Prize unlocked:</p>
+    <div class="reason">One girlfriend who loves you an unreasonable amount. ❤️</div>
+    <p>Now please stop being mad at her.</p>
+    <p>And go give her a call. 📞</p>
+    <div class="hearts">💗 💗 💗</div>
+    <p class="small">Made especially for Suiii.</p>
+  </section>
+</div>
+
+<script>
+let level=1, caught=0, reasonIndex=0;
+const reasons=[
+  "Because your smile makes everything feel better. 🥹",
+  "Because somehow you can annoy me and make me miss you at the same time. 😭",
+  "Because you're my favourite person to bother. ❤️",
+  "Because even from far away, you still feel like home. 🏠",
+  "Because I choose you. Again and again. 💗"
+];
+
+function go(n){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  level=n;
+  document.getElementById('bar').style.width=(n===6?100:(n-1)*20)+'%';
+  if(n===2) spawnHeart();
+}
+function spawnHeart(){
+  const area=document.getElementById('gameArea');
+  area.innerHTML='';
+  const h=document.createElement('div');
+  h.className='heart'; h.textContent='❤️';
+  h.style.left=(Math.random()*82+5)+'%';
+  h.style.top=(Math.random()*70+8)+'%';
+  h.onclick=()=>{
+    caught++;
+    document.getElementById('count').textContent=`Hearts caught: ${caught} / 3`;
+    if(caught<3) spawnHeart(); else go(3);
+  };
+  area.appendChild(h);
+}
+function nextReason(){
+  document.getElementById('reason').textContent=reasons[reasonIndex%reasons.length];
+  reasonIndex++;
+}
+function flirt(type){
+  const r=document.getElementById('flirtResult');
+  if(type==='correct'){
+    r.innerHTML='CORRECT. 😭❤️<br><br>Obviously. Mission continues.';
+    setTimeout(()=>go(5),900);
+  }else{
+    r.textContent='Liar. Try again. 😌';
+  }
+}
+</script>
+</body>
+</html>
